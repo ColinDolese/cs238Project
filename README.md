@@ -1,6 +1,6 @@
 # cs238Project
 
-"Install Everything" command - brew install cmake boost boost-python sdl2 swig wget
+"Install Everything" AI Open Gym command - brew install cmake boost boost-python sdl2 swig wget
 
 For further instructions, see: https://github.com/openai/gym#installation
 
