@@ -2,7 +2,7 @@ import gym
 from Agent import DQNAgent
 import numpy as np
 
-games = 100
+games = 1000
 
 env = gym.make('Centipede-ram-v0')
 state_size = env.observation_space.shape[0]
@@ -11,7 +11,7 @@ agent = DQNAgent(state_size, action_size)
 # agent.load("./save/cartpole-dqn.h5")
 env._max_episode_steps = None
 done = False
-batch_size = 32
+batch_size = 1000
 for e in range(games):
     state = env.reset()
     state = np.reshape(state, [1, state_size])
@@ -24,13 +24,15 @@ for e in range(games):
         reward = reward if not done else -10
         next_state = np.reshape(next_state, [1, state_size])
         agent.remember(state, action, reward, next_state, done)
+        agent.short_replay(state, action, reward, next_state, done)
         state = next_state
         if done:
             print("episode: {}/{}, score: {}, e: {:.2}".format(e, games, time, agent.epsilon))
             break
-        if len(agent.memory) > batch_size:
-            agent.replay(batch_size)
+        # if len(agent.memory) > batch_size:
+        #     agent.replay(batch_size)
         time += 1
+    agent.replay(batch_size)
     if agent.epsilon > agent.epsilon_min:
     	agent.epsilon *= agent.epsilon_decay
 
